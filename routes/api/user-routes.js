@@ -14,7 +14,7 @@ router
 
 
 router
-  .router("/:id")
+  .route("/:id")
   .get(getUserById);
 
 module.exports = router;

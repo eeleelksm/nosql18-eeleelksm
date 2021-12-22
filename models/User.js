@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const dateFormat = require("../utils/dateFormat");
 
 const UserSchema = new Schema(
   {
@@ -22,7 +23,7 @@ const UserSchema = new Schema(
     ],
     friends: [
       {
-        type: Schema.Type.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User"
       }
     ]
