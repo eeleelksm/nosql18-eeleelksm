@@ -1,4 +1,4 @@
-const { User, Thought, Reaction }  = require("../models");
+const { User, Thought }  = require("../models");
 
 const thoughtController = {
   // get all thoughts -- GET api/thoughts
@@ -62,7 +62,7 @@ const thoughtController = {
     )
     .then(dbThoughtData => {
       if(!dbThoughtData) {
-        res.status(404).json({ message: "There is no thought with this id." });
+        res.status(404).json({ message: "There isn't a thought with this id." });
         return;
       }
       res.json(dbThoughtData);
