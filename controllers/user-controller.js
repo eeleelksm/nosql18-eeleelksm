@@ -94,31 +94,20 @@ const userController = {
   // delete a user -- DELETE api/users/:id
   deleteUser({ params }, res) {
     User.findOneAndDelete({ _id: params.id })
-    .then(User.updateMany(
-      { _id: params.userId },
-      { $pull: { friends: { friendId: params.friendId } } },
-      { new: true }
-    ))
     .then(dbUserData => {
       // if the user isn't found, send 404
       if(!dbUserData) {
         res.status(404).json({ message: "There isn't a user with this id."})
         return;
       }
-      Thought.deleteMany(
-        { username: dbUserData.username }
-      )
-      User.deleteMany(
-        { friends: dbUserData.friendId}
-      )
-      .then(dbUserDataSecond => {
-        if(!dbUserDataSecond) {
-          res.status(404).json({ message: "There isn't a user with this id." })
-          return;
-        }
-        res.json(dbUserData);
-      })
-      .catch(err => res.status(400).json(err));
+    User.updateMany(
+      { _id: { $in: dbUserData.friends } },
+      { $pull: { friends: params.id } },
+    )
+    .then(Thought.deleteMany(
+      { username: dbUserData.username }
+    ))
+    .catch(err => res.status(400).json(err));
     })
     .catch(err => res.status(400).json(err))
   },
