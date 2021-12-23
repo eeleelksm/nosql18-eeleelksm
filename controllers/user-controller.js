@@ -100,10 +100,10 @@ const userController = {
         res.status(404).json({ message: "There isn't a user with this id."})
         return;
       }
-    User.updateMany(
+    return (User.updateMany(
       { _id: { $in: dbUserData.friends } },
       { $pull: { friends: params.id } },
-    )
+    ))
     .then(Thought.deleteMany(
       { username: dbUserData.username }
     ))
