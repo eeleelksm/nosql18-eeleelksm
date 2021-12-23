@@ -1,4 +1,4 @@
-const { User, Thought }  = require("../models");
+const { User, Thought, Reaction }  = require("../models");
 
 const thoughtController = {
   // get all thoughts -- GET api/thoughts
@@ -33,10 +33,10 @@ const thoughtController = {
   createThought({ body }, res) {
     console.log(body);
     Thought.create(body)
-      .then(({ _id }) => {
+      .then( dbThoughtData => {
         return User.findOneAndUpdate(
           { _id: body.userId },
-          { $push: { thoughts: _id } },
+          { $push: { thoughts: dbThoughtData._id } },
           { new: true }
         );
       })
@@ -51,6 +51,23 @@ const thoughtController = {
         console.log(err)
         res.status(400).json(err);
       });
+  },
+
+  // create a reaction -- POST /api/thoughts/:thoughtId/reactions
+  createReaction({ params, body }, res) {
+    Thought.findOneAndUpdate(
+      { _id: params.thoughtId },
+      { $push: { reactions: body } },
+      { new: true }
+    )
+    .then(dbThoughtData => {
+      if(!dbThoughtData) {
+        res.status(404).json({ message: "There is no thought with this id." });
+        return;
+      }
+      res.json(dbThoughtData);
+    })
+    .catch(err => res.json(err));
   },
 
 // update a thought -- PUT api/thoughts/:id
@@ -83,9 +100,18 @@ const thoughtController = {
       res.json(dbThoughtData);
     })
     .catch(err => res.status(400).json(err));
-  }
+  },
 
-
+    // delete a reaction -- DELETE /api/thoughts/:thoughtId/reactions/reactionId
+    deleteReaction({ params }, res) {
+      Thought.findOneAndUpdate( 
+        { _id: params.thoughtId },
+        { $pull: {reactions: { reactionId: params.reactionId } } },
+        { new: true }
+      )
+      .then(dbThoughtData => res.json(dbThoughtData))
+      .catch(err => res.json(err));
+    }
 }
 
 module.exports = thoughtController;
