@@ -8,9 +8,9 @@ In this challenge, we were asked build an API for a social network web applicati
 
 The follow links show the API and the routes functionality. The videos can also be found in the media directory.
 
-[No SQL - Part One](https://watch.screencastify.com/v/jmMGD94Od3bfEOXJQiOr)
+[NoSQL - Part One](https://watch.screencastify.com/v/jmMGD94Od3bfEOXJQiOr)
 
-[No SQL - Part Two](https://watch.screencastify.com/v/kAurGX39Q0aNhfcMg4Gp)
+[NoSQL - Part Two](https://watch.screencastify.com/v/kAurGX39Q0aNhfcMg4Gp)
 
 
 
