@@ -100,16 +100,23 @@ const userController = {
         res.status(404).json({ message: "There isn't a user with this id."})
         return;
       }
-    return (User.updateMany(
-      { _id: { $in: dbUserData.friends } },
-      { $pull: { friends: params.id } },
-    )) // not working correctly
-    .then(Thought.deleteMany(
-      { username: dbUserData.username }
-    ))
-    .catch(err => res.status(400).json(err));
+      res.json(dbUserData);
     })
-    .catch(err => res.status(400).json(err))
+    .catch(err => res.status(400).json(err));
+    
+    // DELETE THOUGHTS WITH USER
+    // not working as intended.
+    // (User.updateMany(
+    //   { _id: { $in: dbUserData.friends } },
+    //   { $pull: { friends: params.id } },
+    // )) 
+    // // not working correctly
+    // (Thought.deleteMany(
+    //   { username: dbUserData.username }
+    // ))
+    // .catch(err => res.status(400).json(err));
+    // })
+    // .catch(err => res.status(400).json(err))
   },
 
   // delete a friend -- api/users/:userId/friends/:friendsId
