@@ -103,7 +103,7 @@ const userController = {
     return (User.updateMany(
       { _id: { $in: dbUserData.friends } },
       { $pull: { friends: params.id } },
-    ))
+    )) // not working correctly
     .then(Thought.deleteMany(
       { username: dbUserData.username }
     ))
